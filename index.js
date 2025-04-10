@@ -48,14 +48,14 @@ app.use((req, res, next) => {
 
 // Frontend routes
 app.get('/', (req, res) => {
-  res.render('index.ejs', { title: 'Job Scheduler - Home' });
+  res.render('index', { title: 'Job Scheduler - Home' });
 });
 
 app.get('/dashboard', async (req, res) => {
   try {
     const currentTime = Math.floor(Date.now() / 1000);
     const jobs = await Job.find({ timestamp: { $gte: currentTime } }).sort({ timestamp: 1 });
-    res.render('dashboard.ejs', { 
+    res.render('dashboard', { 
       title: 'Dashboard', 
       jobs,
       currentTime
@@ -71,13 +71,13 @@ app.get('/dashboard', async (req, res) => {
 });
 
 app.get('/add-job', (req, res) => {
-  res.render('addJob.ejs', { title: 'Add New Job' });
+  res.render('addJob', { title: 'Add New Job' });
 });
 
 app.get('/job-list', async (req, res) => {
   try {
     const jobs = await Job.find().sort({ timestamp: 1 });
-    res.render('jobList.ejs', { 
+    res.render('jobList', { 
       title: 'All Jobs', 
       jobs
     });
@@ -93,7 +93,7 @@ app.get('/job-list', async (req, res) => {
 
 // New route for delete all confirmation
 app.get('/delete-all-jobs', (req, res) => {
-  res.render('deleteAllConfirmation.ejs', { title: 'Delete All Jobs' });
+  res.render('deleteAllConfirmation', { title: 'Delete All Jobs' });
 });
 
 // New API route to delete all jobs
