@@ -25,7 +25,7 @@ const PORT = process.env.PORT || 3000;
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
-// Middleware
+// Middlewares
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
@@ -46,7 +46,7 @@ app.use((req, res, next) => {
   next();
 });
 
-// Frontend routes
+
 app.get('/', (req, res) => {
   res.render('index', { title: 'Job Scheduler - Home' });
 });
@@ -91,17 +91,17 @@ app.get('/job-list', async (req, res) => {
   }
 });
 
-// New route for delete all confirmation
+
 app.get('/delete-all-jobs', (req, res) => {
   res.render('deleteAllConfirmation', { title: 'Delete All Jobs' });
 });
 
-// New API route to delete all jobs
+
 app.post('/api/delete-all-jobs', async (req, res) => {
   try {
-    await Job.deleteMany({}); // Delete all jobs from DB
+    await Job.deleteMany({}); 
     console.log('✅ All jobs deleted, bro!');
-    jobMap.clear(); // Clear in-memory jobMap too
+    jobMap.clear(); 
     res.status(200).send('All jobs deleted');
   } catch (err) {
     console.error('❌ Error deleting all jobs:', err);
@@ -109,10 +109,10 @@ app.post('/api/delete-all-jobs', async (req, res) => {
   }
 });
 
-// API routes
+
 app.use('/api', jobRoutes);
 
-// Main startup flow
+
 connectDB()
   .then(async () => {
     console.log('✅ Connected to MongoDB');

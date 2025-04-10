@@ -1,6 +1,6 @@
-// public/js/main.js
+
 document.addEventListener('DOMContentLoaded', function() {
-    // Toggle interval input based on job type
+   
     const jobTypeRadios = document.querySelectorAll('input[name="type"]');
     const intervalContainer = document.getElementById('intervalContainer');
 
@@ -18,22 +18,22 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Handle Add Job Form Submission
+   
     const addJobForm = document.getElementById('addJobForm');
     if (addJobForm) {
         addJobForm.addEventListener('submit', function(e) {
             e.preventDefault();
             
-            // Get form values
+          
             const name = document.getElementById('jobName').value;
             const type = document.querySelector('input[name="type"]:checked').value;
             const dateTimeInput = document.getElementById('jobDateTime').value;
             const command = document.getElementById('command').value;
             
-            // Convert datetime to timestamp (in seconds)
+            // Converting datetime to timestamp (in seconds)
             const timestamp = Math.floor(new Date(dateTimeInput).getTime() / 1000);
             
-            // Build job object
+            // Making job object
             const jobData = {
                 name: name,
                 type: type,
@@ -48,7 +48,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 jobData.interval = parseInt(document.getElementById('interval').value);
             }
             
-            // Send POST request to API
+           
             fetch('/api/add-job', {
                 method: 'POST',
                 headers: {
@@ -80,7 +80,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Handle Remove Job buttons
+  
     const removeButtons = document.querySelectorAll('.remove-job');
     if (removeButtons) {
         removeButtons.forEach(button => {
@@ -99,7 +99,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     .then(response => response.json())
                     .then(data => {
                         if (data.message) {
-                            // Refresh the page to show updated job list
+                            // For refreshing the page to show updated job list
                             window.location.reload();
                         } else {
                             throw new Error('Failed to remove job');

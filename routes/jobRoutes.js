@@ -4,7 +4,7 @@ const Job = require('../models/jobModel');
 
 const { addJobToMap,removeJobFromMap } = require('../scheduler/jobMap');
 
-// POST /add-job
+
 router.post('/add-job', async (req, res) => {
   try {
     const { name, type, timestamp, interval, payload } = req.body;
@@ -15,8 +15,7 @@ router.post('/add-job', async (req, res) => {
 
     // Add to in-memory map
     addJobToMap(job);
-   // req.flash('success_msg', `✅ Job "${job.name}" scheduled and running!`);
-   // res.redirect('/dashboard');
+  
     res.status(201).json({ message: 'Job scheduled successfully!', job });
   } catch (err) {
     console.error(err);
@@ -63,7 +62,7 @@ router.post('/remove-job', async (req, res) => {
         console.warn(`⚠️ No job found in DB with name "${name}" and timestamp ${ts}`);
       }
   
-      // Respond with success
+      
       res.json({ success: true, message: `Job "${name}" deleted successfully` });
     } catch (error) {
       console.error("Error deleting job:", error);

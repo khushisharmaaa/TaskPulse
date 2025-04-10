@@ -15,7 +15,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const data = await res.json();
   
         if (data.success) {
-          // Remove the row from DOM without reloading
+         
           this.closest("tr").remove();
         } else {
           alert("❌ Failed to delete the job.");

@@ -1,18 +1,18 @@
 const Job = require('../models/jobModel');
 const { exec } = require('child_process');
 
-let jobQueue = []; // In-memory queue
+let jobQueue = []; 
 let isProcessing = false;
-const jobMap = new Map(); // Needed for recurring jobs
+const jobMap = new Map(); 
 
 module.exports = (io) => {
-  // ✅ Add job to queue and process
+  
   async function addToQueue(job) {
     try {
       jobQueue.push(job);
       console.log(`📝 Job "${job.name}" added to the queue`);
 
-      // ❗ Remove _id if present
+     
       const jobToSave = { ...job };
       delete jobToSave._id;
 
@@ -20,7 +20,7 @@ module.exports = (io) => {
       await newJob.save();
       console.log(`📝 Job "${job.name}" saved to the database`);
 
-      // 🔄 Start processing if not already
+      
       if (!isProcessing) {
         processQueue();
       }
@@ -29,7 +29,7 @@ module.exports = (io) => {
     }
   }
 
-  // ✅ Process the queue
+  
   async function processQueue() {
     isProcessing = true;
 
@@ -52,7 +52,7 @@ module.exports = (io) => {
     isProcessing = false;
   }
 
-  // ✅ Execute a job (Shell Command)
+  
   function executeJob(job) {
     return new Promise((resolve) => {
       const command = job.payload.command;
@@ -101,9 +101,8 @@ module.exports = (io) => {
     });
   }
 
-  // Worker entry point
+  
   function startWorker() {
-    // Can be used to reprocess future jobs or scheduled queue
     console.log('Worker started, bro!');
   }
 
