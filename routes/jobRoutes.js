@@ -38,7 +38,7 @@ router.post('/remove-job', async (req, res) => {
       console.error(`❌ Failed to remove job:`, err);
       res.status(500).json({ error: 'Failed to remove job' });
     }
-  }); 
+  });
 
 
   router.post('/delete-job', async (req, res) => {

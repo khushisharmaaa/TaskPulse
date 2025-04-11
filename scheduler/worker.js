@@ -5,6 +5,7 @@ let jobQueue = [];
 let isProcessing = false;
 const jobMap = new Map(); 
 
+
 module.exports = (io) => {
   
   async function addToQueue(job) {
@@ -19,7 +20,7 @@ module.exports = (io) => {
       const newJob = new Job(jobToSave);
       await newJob.save();
       console.log(`📝 Job "${job.name}" saved to the database`);
-
+      
       
       if (!isProcessing) {
         processQueue();
@@ -63,7 +64,7 @@ module.exports = (io) => {
         return resolve();
       }
 
-      exec(command, (error, stdout, stderr) => {
+      exec(command, (error, stdout, stderr) =>{
         if (error) {
           console.error(`❌ Execution failed for "${job.name}": ${error.message}`);
           io.emit('job-result', {

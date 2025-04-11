@@ -70,9 +70,11 @@ app.get('/dashboard', async (req, res) => {
   }
 });
 
+
 app.get('/add-job', (req, res) => {
   res.render('addJob', { title: 'Add New Job' });
 });
+
 
 app.get('/job-list', async (req, res) => {
   try {
