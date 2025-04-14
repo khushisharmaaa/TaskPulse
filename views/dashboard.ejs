@@ -137,7 +137,14 @@
         message.textContent = `Job "${data.name}" (Command: ${data.command}) - ${data.success ? 'Successfully executed!' : 'Error, try again!'}: ${data.message}`;
         messagesDiv.insertBefore(message, messagesDiv.firstChild);
 
-        if (data.success) {
+        if (data.success== true 
+        || data.success==false) {
+            const alert = document.createElement('div');
+            alert.className = `alert ${data.success ? 'alert-success' : 'alert-danger'} mt-3`;
+            alert.innerHTML = `<strong>${data.success ? 'Success!' : 'Error!'}</strong> Job "${data.name}" has been ${data.success ? 'successfully executed' : 'failed to execute'}.`;
+            messagesDiv.appendChild(alert);
+            messagesDiv.scrollTop = messagesDiv.scrollHeight; // Scroll to the bottom
+            // Redirect to the dashboard after 5 seco
             setTimeout(() => {
                 window.location.href = '/';
             }, 5000);

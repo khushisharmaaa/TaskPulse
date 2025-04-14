@@ -1,4 +1,3 @@
-
 <%- include('partials/header') %>
 <%- include('partials/navbar') %>
 
@@ -12,6 +11,11 @@
             <a href="/add-job" class="btn btn-primary">
                 <i class="fas fa-plus-circle me-1"></i> Add New Job
             </a>
+            <% if (user && user.isAdmin) { %> <!-- Show only for admins -->
+                <a href="/delete-all-jobs" class="btn btn-danger ms-2">
+                    <i class="fas fa-trash-alt me-1"></i> Delete All Jobs
+                </a>
+            <% } %>
         </div>
     </div>
 
@@ -51,10 +55,10 @@
                                     <td><code><%= job.payload.command %></code></td>
                                     <td>
                                         <button class="btn btn-sm btn-danger remove-job" 
-                                        data-name="<%= job.name %>" 
-                                        data-timestamp="<%= job.timestamp %>">
-                                    <i class="fas fa-trash-alt"></i>
-                                </button>
+                                                data-name="<%= job.name %>" 
+                                                data-timestamp="<%= job.timestamp %>">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </button>
                                     </td>
                                 </tr>
                             <% }); %>

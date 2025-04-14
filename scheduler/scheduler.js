@@ -15,11 +15,11 @@ module.exports = (addToQueue) => {
           if (!job || !job._id) {
             console.error("❌ Skipping invalid job:", job);
             continue;
-        }
+        }  
 
          
           const jobObject = job instanceof Job ? job.toObject() : job;
-
+           
          
           addToQueue(jobObject);
 
