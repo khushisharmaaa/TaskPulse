@@ -77,9 +77,11 @@ function rescheduleJob(job) {
   
      
       let newJob = job.toObject ? job.toObject() : JSON.parse(JSON.stringify(job));
-      delete newJob._id;
+
+      /*
+      delete newJob._id; // Check karna h 
       newJob.timestamp = newTimestamp;
-  
+  */
      
       removeJobFromMap(_id, timestamp);
   

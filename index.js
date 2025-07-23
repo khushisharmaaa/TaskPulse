@@ -36,6 +36,33 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(cookieParser());
 
+// rate limiter middleware here
+const window = new Map();
+const allowedTime = 10 * 1000;
+const maxRequests = 5;
+
+app.use((req, res, next) => {
+  const ip = req.ip;
+  const currentTime = Date.now();
+
+  if (!window.has(ip)) {
+    window.set(ip, []);
+  }
+
+  const timeArray = window.get(ip);
+  while (timeArray.length > 0 && currentTime - timeArray[0] > allowedTime) {
+    timeArray.shift();
+  }
+
+  if (timeArray.length >= maxRequests) {
+    return res.status(429).send('Too many requests. Please try again later.');
+  }
+
+  timeArray.push(currentTime);
+  window.set(ip, timeArray);
+  next();
+});
+
 const session = require('express-session');
 const flash = require('connect-flash');
 
@@ -44,6 +71,7 @@ app.use(session({
   resave: false,
   saveUninitialized: true
 }));
+
 app.use(flash());
 
 // Set global variables for templates
@@ -86,12 +114,10 @@ app.get('/login', (req, res) => {
   });
 });
 
-app.get('/register',  (req, res) => {
+app.get('/register', (req, res) => {
   if (res.locals.user) {
     return res.redirect('/dashboard');
   }
-//const jobs = await Job.find({ user: req.user._id }).sort({ createdAt: -1 }) || [];
-
   res.render('register', { title: 'Register' });
 });
 
@@ -103,7 +129,7 @@ app.get('/dashboard', protect, async (req, res) => {
     res.render('dashboard', { 
       title: 'Dashboard', 
       jobs,
-      currentTime
+      currentTime 
     });
   } catch (err) {
     console.error('Error fetching jobs:', err);
@@ -166,22 +192,22 @@ app.post('/api/delete-all-jobs', protect, /*authorize('admin'),*/ async (req, re
 });
 
 // API Routes
-
 app.use('/api/users', require('./routes/userRoutes'));
 app.use('/api', protect, jobRoutes);
 
 // Error handling middleware
 app.use((req, res, next) => {
   if (req.originalUrl.startsWith('/api')) {
-      return res.status(404).json({
-          message: 'API route not found'
-      });
+    return res.status(404).json({
+      message: 'API route not found'
+    });
   }
   res.status(404).render('error', {
-      title: 'Not Found',
-      message: 'The page you are looking for does not exist'
+    title: 'Not Found',
+    message: 'The page you are looking for does not exist'
   });
 });
+
 connectDB()
   .then(async () => {
     console.log('✅ Connected to MongoDB');

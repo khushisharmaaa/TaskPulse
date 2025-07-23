@@ -1,6 +1,5 @@
 const Job = require('../models/jobModel');
 const { exec } = require('child_process');
-
 let jobQueue = []; 
 let isProcessing = false;
 const jobMap = new Map(); 
@@ -42,7 +41,7 @@ module.exports = (io) => {
 
       await Job.updateOne({ _id: job._id }, { $set: { status: 'completed' } });
 
-      if (job.type === 'recurring') {
+      if(job.type === 'recurring') {
         const nextTime = job.timestamp + job.interval;
         const existingJobs = jobMap.get(nextTime) || [];
         existingJobs.push(job);
